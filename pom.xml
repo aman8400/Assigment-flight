@@ -53,6 +53,23 @@
 							<artifactId>spring-core</artifactId>
 						</sharedLibrary>
 					</sharedLibraries>
+										<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${mule.version}</muleVersion>
+						<username>${anypoint.username}</username>
+						<password>${anypoint.password}</password>
+						<applicationName>${appname}</applicationName>
+						<environment>${env}</environment>
+						<businessGroup>${business}</businessGroup>
+						<workers>${workers}</workers>
+						<workerType>${vCore}</workerType>
+						<objectStoreV2>true</objectStoreV2>
+						<properties>
+							<anypoint.platform.client_id>${anypoint.platform.client_id}</anypoint.platform.client_id>
+							<anypoint.platform.client_secret>${anypoint.platform.client_secret}</anypoint.platform.client_secret>
+						</properties>						
+					</cloudHubDeployment>
+					
 					<classifier>mule-application</classifier>
 				</configuration>
 			</plugin>
