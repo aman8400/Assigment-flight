@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-suite.xml" />
+	<munit:test name="getFlightsData-test" doc:id="1a90ced5-143e-4080-abdb-8178cd55ff45" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Request Mocking service" doc:id="bf854276-9ccb-4feb-b29a-84a309b56ca3" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a5abaa1e-5805-4d5a-9e7e-4c547f022c08" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getFlightsDatatest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getFlightsDatatest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsDatatest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsDatatest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="7df9c3fd-9a05-44a4-9214-6cd3dc459b5e" >
+				<munit:payload value="#[readUrl('classpath://getFlightsDatatest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getFlightsDatatest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsDatatest\set-event_variable_.dwl')]" />
+					<munit:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsDatatest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getFlightsData" doc:id="e27a1b62-f614-44c3-b89b-ed253f237f97" name="getFlightsData"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="f08186c7-af54-443e-a7e7-578a78daf2ab" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getFlightsDatatest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get-Flights-All-Sources-test" doc:id="2b9a5170-8a03-40ab-9684-08198491a097" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Get flights data" doc:id="0f83852b-fa75-4078-a2f3-1e8056d0528b" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="de2104d6-1f33-43c1-bfe9-438338ccdb72" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getFlightsAllSourcestest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getFlightsAllSourcestest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsAllSourcestest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsAllSourcestest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="38699e83-95bc-4ad5-a3ee-e612adbd35df" >
+				<munit:payload value="#[readUrl('classpath://getFlightsAllSourcestest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getFlightsAllSourcestest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsAllSourcestest\set-event_variable_.dwl')]" />
+					<munit:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsAllSourcestest\set-event_variable_1.dwl')]" encoding="UTF-8" mediaType="application/java" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-Flights-All-Sources" doc:id="73f4855c-7b94-4dc9-a4d1-2afa51c31252" name="get-Flights-All-Sources"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="a4454e26-8fb2-40fb-be69-a0c291c2e797" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getFlightsAllSourcestest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify filter payload based on destination" doc:id="f9841faa-6604-48cc-890b-f4ac2dfd12b6" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="72c3a246-1e8d-4613-82b8-2bf6084706fe" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Convert incoming data to json" doc:id="0514e65c-ad15-431b-bbe7-8ad2889bc677" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cb9f9295-735c-4503-8f47-0bfef57f18e1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="getFlightsempty-test" doc:id="05c083fd-4f01-4d9c-816a-52aaee0eeca3" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Get All Flights" doc:id="b9e546d2-b54c-4e6f-8d76-f0f99d79592e" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="238b5bef-9e31-452e-8b2c-9216bcaa1014" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getFlightsemptytest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getFlightsemptytest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsemptytest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsemptytest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Set destination variable" doc:id="a0b07572-f5fd-4af2-9ecd-a252e01aa6c3" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cd831863-2dc8-4d5b-97d1-95d344c5ec37" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://getFlightsemptytest\mock_payload1.dwl')]" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getFlightsemptytest\mock_attributes1.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsemptytest\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsemptytest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy When no flights found" doc:id="86113a25-64d0-4777-b456-036feaa65e19" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="45481339-a369-4f54-90ee-5bb99bd75188" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="28681698-9a2c-4d56-bc4a-5f83eefa1ea2" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getFlightsemptytest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="a1b24d05-d386-4c3f-a7a2-e9780e76004e" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getFlightsemptytest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="056af03c-2f7d-4340-8537-00228df66696" >
+				<munit:payload value="#[readUrl('classpath://getFlightsemptytest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getFlightsemptytest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsemptytest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getFlights" doc:id="504a7ec3-83aa-4584-a0de-99ded2ab93a2" name="getFlights"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="4ceb1e5f-df9b-4786-b3b4-4840ed30514d" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getFlightsemptytest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="4f7291ef-2020-407f-986a-c9a1646c3389" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="41e1f5f5-d526-4ea8-9964-d64a9e754eb1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="29dc5cb8-f139-405b-ba8d-77a38e2c1c60" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="697ddcc3-42d2-4045-b52e-2e2c1d494e50" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify When no flights found" doc:id="df722d29-e46f-40ab-866d-f6144ef7daae" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="45481339-a369-4f54-90ee-5bb99bd75188" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="setDestination-test" doc:id="e01a8046-a871-4580-83e3-ab413c13dfcc" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="a34d2454-a1b3-4106-a110-c55151bf052b" >
+				<munit:payload value="#[readUrl('classpath://setDestinationtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://setDestinationtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://setDestinationtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to setDestination" doc:id="b710ada0-0102-45af-af48-9525304ed60b" name="setDestination"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="b64609fa-88cf-4a07-bd0e-9b8a03097f7c" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import setDestinationtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify set Destination Variable" doc:id="96cb0512-3750-4b32-801b-3880f07cde11" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="066c914a-9fc2-4d92-95ae-0ce17d430740" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="postFlight-test" doc:id="1103a460-f0fd-4a94-994a-bb8e2cf447bb" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Request mocking service" doc:id="6a32d0ee-cdf9-442b-a7ad-bda2de17ca2b" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d5682825-151c-4b44-88cb-d4030df57050" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postFlighttest\mock_payload2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://postFlighttest\mock_attributes2.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postFlighttest\mock_variable_6.dwl')]" />
+						<munit-tools:variable key="Email" value="#[output application/json --- readUrl('classpath://postFlighttest\mock_variable_7.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:spy doc:name="Spy Validate if flight is booked" doc:id="71393e17-f559-4ec8-830d-12bf226d35fb" processor="validation:is-true">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1f3d2417-2587-42e1-9ccb-0721a137aec2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="39603cbe-0570-4c7d-bd7f-4701894cd807" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import postFlighttest::spy_assert_payload6
+---
+spy_assert_payload6::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="9b56dd9e-f7c6-4599-986f-8a4f2559591f" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import postFlighttest::spy_assert_payload7
+---
+spy_assert_payload7::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="ee237895-4e86-4101-b077-c9c90ad93b1b" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postFlighttest\set-event_payload2.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postFlighttest\set-event_attributes2.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postFlighttest\set-event_variable_2.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to postFlight" doc:id="f8a3695f-ed39-4346-804d-cf648c3550b3" name="postFlight"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="1a874997-b285-4151-ba73-05d39ddbd677" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postFlighttest::assert_expression_payload2
+---
+assert_expression_payload2::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Set Email Variable" doc:id="cff27e19-564b-40f7-ae5c-c8d7178f8eda" processor="set-variable" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c8d60d15-c180-4663-9020-22b0a1b77878" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Add booking time to payload" doc:id="21698fe0-d228-48f1-8a7d-48b48d8a3833" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="b79fd6c2-187e-421c-92e2-23e6dd73a522" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Set Flight status message" doc:id="af2ec99c-5787-4a46-b6aa-800f39ac365b" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="eafe1035-2ee4-4ade-9c0f-7b4ae93c1471" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Send Email" doc:id="0869cc72-f6fc-4a8f-bb9d-f6bf0ea94646" processor="email:send" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="21e361ca-625a-4a6f-8b58-6c4288bfbf95" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="2f2c3cf4-16ab-46eb-8b99-69ed67c32e76" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a82351f4-5fe3-406c-93ea-9ecadcdf056c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Validate if flight is booked" doc:id="8fb4e164-373e-4001-b0e1-2a9521808b52" processor="validation:is-true" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1f3d2417-2587-42e1-9ccb-0721a137aec2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="get:\flights:bookmyflight-config-test" doc:id="3b6b5cd8-5640-4f2c-b349-b52bec9331b1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="13264024-4c66-47a0-8787-c7e296ad4359" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="bba022ac-9ee8-48d6-b817-2a8287ef802f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getflightsbookmyflightconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getflightsbookmyflightconfigtest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getflightsbookmyflightconfigtest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://getflightsbookmyflightconfigtest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="c3bf2678-fe0a-493e-bc8f-f06894ee3618" >
+				<munit:payload value="#[readUrl('classpath://getflightsbookmyflightconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getflightsbookmyflightconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getflightsbookmyflightconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\flights:bookmyflight-config" doc:id="a54c7759-81e1-425a-84a8-5de37c22b196" name="get:\flights:bookmyflight-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="c40119fa-c84b-43a5-81f3-16766325ad50" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getflightsbookmyflightconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\flights:application\json:bookmyflight-config-test" doc:id="9fb37816-7df8-4caa-90ba-64b8ac0a7edd" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="4a9009d6-43e3-46dc-94b4-66fdd238f10c" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a9d5de93-1075-404f-9cd7-c9f1ddc34575" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postflightsapplicationjsonbookmyflightconfigtest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://postflightsapplicationjsonbookmyflightconfigtest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postflightsapplicationjsonbookmyflightconfigtest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="Email" value="#[output application/json --- readUrl('classpath://postflightsapplicationjsonbookmyflightconfigtest\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="9377f128-8fcc-43da-93fd-5896d0b9c7b8" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postflightsapplicationjsonbookmyflightconfigtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postflightsapplicationjsonbookmyflightconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postflightsapplicationjsonbookmyflightconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\flights:application\json:bookmyflight-config" doc:id="6588a292-bde2-437d-91eb-0ab042208c35" name="post:\flights:application\json:bookmyflight-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="0d051fb9-b4af-4703-9f31-857333481bdd" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postflightsapplicationjsonbookmyflightconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="getFlightsn-test" doc:id="e96f1417-b341-47d0-b7bd-9bf363e0b627" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Get All Flights" doc:id="cf4ab261-8602-433c-a6aa-bfb9771dbbef" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="238b5bef-9e31-452e-8b2c-9216bcaa1014" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://getFlightsntest\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getFlightsntest\mock_attributes.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsntest\mock_variable_.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsntest\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Set destination variable" doc:id="0c517b1d-6bfe-42f9-938e-79179c305b1a" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="cd831863-2dc8-4d5b-97d1-95d344c5ec37" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[readUrl('classpath://getFlightsntest\mock_payload1.dwl')]" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://getFlightsntest\mock_attributes1.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsntest\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://getFlightsntest\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="f0afcb8a-a3b5-4bf2-b84b-b9afbae86d34" >
+				<munit:payload value="#[readUrl('classpath://getFlightsntest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getFlightsntest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getFlightsntest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to getFlights" doc:id="c93e5fb1-023e-4e8a-a85c-fdbc2644a703" name="getFlights"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="67ab8a58-1c9a-44f9-8daa-54f7bff06d79" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getFlightsntest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="8db86f67-ed5a-433e-a2f8-3eed35ac6c60" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="41e1f5f5-d526-4ea8-9964-d64a9e754eb1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Logger" doc:id="92d60573-a64b-4163-bc91-c70dff40f8b6" processor="logger" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="697ddcc3-42d2-4045-b52e-2e2c1d494e50" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Payload when flights &gt; 0" doc:id="291a6bb8-30bd-4bd4-83e4-54c6c26da942" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8df2be69-cb94-440c-bac2-edebbcc02adf" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="bookmyflight-main-test" doc:id="540b3dd5-69a8-4d21-aede-e25584530775" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="b764a79b-81a9-412d-97ec-d666250d0c79" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d13f9f66-702c-4e5c-8412-1ae0aee6f34b" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://bookmyflightmaintest\mock_payload2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://bookmyflightmaintest\mock_attributes2.dwl')]" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://bookmyflightmaintest\mock_variable_6.dwl')]" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://bookmyflightmaintest\mock_variable_7.dwl')]" />
+						<munit-tools:variable key="dest" value="#[output application/java --- readUrl('classpath://bookmyflightmaintest\mock_variable_8.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="5a1564a6-2512-4cb0-acd7-0f0f319d2989" >
+				<munit:payload value="#[readUrl('classpath://bookmyflightmaintest\set-event_payload2.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://bookmyflightmaintest\set-event_attributes2.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to bookmyflight-main" doc:id="2b44317b-777e-40a8-9e6e-1d5c17061698" name="bookmyflight-main"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e2a82890-7a24-4990-b918-aaf4f1b8e932" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import bookmyflightmaintest::assert_expression_payload2
+---
+assert_expression_payload2::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

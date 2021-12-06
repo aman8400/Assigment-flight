@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:spring="http://www.mulesoft.org/schema/mule/spring" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="94c9a291-a500-4a51-ba28-dab3e38e5f68" >
+		
+		<http:request-connection host="anypoint.mulesoft.com" />
+	</http:request-config>
+	<email:smtp-config name="Email_global_SMTP" doc:name="Email SMTP" doc:id="f8266363-3ec4-471d-b725-9cdab8e468ba" >
+		<email:smtp-connection host="smtp.gmail.com" port="587" user="aman.o.srivastava@apisero.com" password="Aman@8400">
+					<email:properties >
+				<email:property key="mail.smtp.starttls.enable" value="true" />
+			</email:properties>
+		</email:smtp-connection>
+	</email:smtp-config>
+	<flow name="getFlightsData" doc:id="af5dad58-5c07-4460-8128-0d3778a26d80" >
+		<ee:cache doc:name="Cache" doc:id="3157d4bc-9e3a-4921-a35c-247b716f5c57" >
+			<http:request method="GET" doc:name="Request Mocking service" doc:id="a5abaa1e-5805-4d5a-9e7e-4c547f022c08" path="/mocking/api/v1/links/fe1d6d07-0cfe-4f73-962e-28ac84512207/flights" sendCorrelationId="ALWAYS" config-ref="HTTP_Request_configuration">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"accept" : "application/json"
+}]]]></http:headers>
+				<http:query-params><![CDATA[#[output application/java
+---
+{	
+	dest : "BNG"
+}]]]></http:query-params>
+		</http:request>
+		</ee:cache>
+	</flow>
+	<flow name="get-Flights-All-Sources" doc:id="7525553e-65f5-4ad7-a5d8-4f971bce1daa" >
+		<flow-ref doc:name="Get flights data" doc:id="de2104d6-1f33-43c1-bfe9-438338ccdb72" name="getFlightsData" />
+		<ee:transform doc:name="Convert incoming data to json" doc:id="cb9f9295-735c-4503-8f47-0bfef57f18e1">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+		<ee:transform doc:name="filter payload based on destination" doc:id="72c3a246-1e8d-4613-82b8-2bf6084706fe">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+
+(((payload) filter $.dest==vars.dest))
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="getFlights" doc:id="ae193867-810b-48c3-b2f6-77cf92fdce5a" >
+		<flow-ref doc:name="Set destination variable" doc:id="cd831863-2dc8-4d5b-97d1-95d344c5ec37" name="setDestination"/>
+		<!--<validation:is-true doc:name="is Source Valid" doc:id="ca70c454-abd7-4d3d-ba92-14d5e320006b" expression='#[["Delhi","Lucknow","Bengaluru","Mumbai","Jaipur","Varanasi","Udaipur","Jabalpur"] contains vars.source]' message="Please enter a valid source"/>
+		<validation:is-true doc:name="Is destination valid" doc:id="cf491089-8ad6-4027-b7b6-0af6eae401fb" expression='#[["Delhi","Lucknow","Bengaluru","Mumbai","Jaipur","Varanasi","Udaipur","Jabalpur"] contains vars.dest]' message="Please enter valid destination"/> -->
+		<flow-ref doc:name="Get All Flights" doc:id="238b5bef-9e31-452e-8b2c-9216bcaa1014" name="get-Flights-All-Sources" />
+		<logger level="INFO" doc:name="Logger" doc:id="41e1f5f5-d526-4ea8-9964-d64a9e754eb1" message="#[payload]"/>
+		<choice doc:name="Choice" doc:id="f90a6fe9-644f-479c-81b3-131e6438b428">
+			<when expression="#[not isEmpty(payload)]">
+				<ee:transform doc:name="Payload when flights &gt; 0" doc:id="8df2be69-cb94-440c-bac2-edebbcc02adf">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	flights: payload
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="When no flights found" doc:id="45481339-a369-4f54-90ee-5bb99bd75188">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message" : "No flights found for this destination"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="697ddcc3-42d2-4045-b52e-2e2c1d494e50" message="#[payload]"/>
+	</flow>
+	<sub-flow name="setDestination" doc:id="29098eb6-8d70-475d-97c2-a84e47842145" >
+		<set-variable value="#[attributes.queryParams.dest]" doc:name="set destination Variable" doc:id="066c914a-9fc2-4d92-95ae-0ce17d430740" variableName="dest"/>
+	</sub-flow>
+	<flow name="postFlight" doc:id="a5731be9-9980-4534-bbce-7269d2c4cec1" >
+		<ee:transform doc:name="Add booking time to payload" doc:id="b79fd6c2-187e-421c-92e2-23e6dd73a522" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload ++ "bookedAt": now()]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[payload.Email]" doc:name="Set Email Variable" doc:id="c8d60d15-c180-4663-9020-22b0a1b77878" variableName="Email"/>
+		<http:request method="POST" doc:name="Request mocking service" doc:id="d5682825-151c-4b44-88cb-d4030df57050" config-ref="HTTP_Request_configuration" path="/mocking/api/v1/links/fe1d6d07-0cfe-4f73-962e-28ac84512207/flights">
+			<http:headers ><![CDATA[#[output application/java
+---
+{
+	"Accept" : "application/json",
+	"Content-Type" : "application/json"
+}]]]></http:headers>
+		</http:request>
+		<logger level="INFO" doc:name="Logger" doc:id="a82351f4-5fe3-406c-93ea-9ecadcdf056c" message="#[payload]"/>
+		
+		<!-- <try doc:name="Try" doc:id="93a7b427-cc85-4b37-afd2-1296dd869e58" >
+			<validation:is-true doc:name="Validate if flight is booked" doc:id="e2ac9d25-4758-4775-ac07-609e140ba09b" expression='#[ payload.Result=="success"]' message='#["Flight booked"]'/>
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="acdd025b-695b-4bfd-a9be-103966ddab55" type="VALIDATION:INVALID_BOOLEAN">
+					<set-payload value='#[{&#10;	"Booking Status": "Un-successfull"&#10;}]' doc:name="Set Payload" doc:id="6f61dca0-d4d9-42ed-8352-68161ab9a229" />
+					<ee:transform doc:name="Transform Message" doc:id="e47dea39-80be-4f52-8e7a-898dfd851ad3" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+-&#45;&#45;
+payload]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+				</on-error-propagate>
+			</error-handler>
+		</try> -->
+		<try doc:name="Try" doc:id="a3a5b898-3b38-4940-8fc7-c265f7f08c79">
+			<validation:is-true doc:name="Validate if flight is booked" doc:id="1f3d2417-2587-42e1-9ccb-0721a137aec2" expression='#[ payload.message=="success"]' message="Flight could not be booked" />
+			<error-handler>
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="adc7b566-3fc6-4d84-9132-a614af2cffcd" type="VALIDATION:INVALID_BOOLEAN">
+					<set-payload value='#[{&#10;&#10;	"Booking Status": "Flight could not be booked"&#10;&#10;}]' doc:name="Set failure response" doc:id="5f573077-68b8-41e9-8621-3cd78734482f" />
+					<ee:transform doc:name="convert message to Json payload" doc:id="07e531ca-9f4e-458a-a435-ec5bb72022a5">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<ee:transform doc:name="Set Flight status message" doc:id="eafe1035-2ee4-4ade-9c0f-7b4ae93c1471" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Booking status": payload.message as String,
+	"Email": vars.Email as String default "aman.o.srivastava@apisero.com",
+	"message": "Confirmation has been sent to your email"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<email:send doc:name="Send Email" doc:id="21e361ca-625a-4a6f-8b58-6c4288bfbf95" fromAddress="aman.o.srivastava@apisero.com" subject='"Flight Booked Successfully"' config-ref="Email_global_SMTP">
+			<email:to-addresses >
+				<email:to-address value="#[vars.Email]" />
+			</email:to-addresses>
+		</email:send>
+	</flow>
+
+</mule>
